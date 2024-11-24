@@ -1,6 +1,7 @@
 var przy1 = document.getElementById('Pogoda');
 var Wynik = document.getElementById("Wynik")
-przy1.addEventListener("click", function(){
+przy1.addEventListener("click", fetchData());
+function fetchData() {
 	fetch('http://api.weatherapi.com/v1/search.json?key=<12c455b685114ca09cd163336242411>&q=Zabrze', {
         method: 'GET',
         headers: {
@@ -19,4 +20,4 @@ przy1.addEventListener("click", function(){
         .catch(error => {
             Wynik.innerHTML=("Błąd", error);
         });
-});
+    }
