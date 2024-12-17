@@ -1,4 +1,4 @@
-function fetchData1(){
+function sprawdzMiasto(){
   const miasto = document.getElementById("miasto").value;
   fetch('http://api.weatherapi.com/v1/search.json?key=12c455b685114ca09cd163336242411&q=' + miasto +'&lang=pl', {
     method: 'GET',
@@ -14,15 +14,19 @@ function fetchData1(){
   })
   .then(data => {
     console.log(JSON.stringify(data));
-    if(data[0] = length0){
-
+    if(data.length == 0){
+      wyswietlBlad("Nieznane miasto, wpisz ponownie");
+    }
+    else{
+      wyswietlBlad("");
+      wyswietlDaneMiasta();
     }
   })
   .catch(error => {
-    document.getElementById("coSzukam").innerHTML="Błąd" + error;
+    wyswietlBlad("Błąd: " + error);
   })
 }
-function fetchData2() {
+function wyswietlDaneMiasta() {
   const miasto = document.getElementById("miasto").value;
 	fetch('http://api.weatherapi.com/v1/current.json?key=12c455b685114ca09cd163336242411&q=' + miasto +'&lang=pl', {
         method: 'GET',
@@ -38,14 +42,21 @@ function fetchData2() {
         })
         .then(data => {
           console.log(JSON.stringify(data));
-          document.getElementById("wynik1").innerHTML = "Temperatura: " + data.current.temp_c + "°C";
-          document.getElementById("wynik2").innerHTML = "Prędkość wiatru: " + data.current.wind_kph + "km/h";
+          document.getElementById("temp").innerHTML = "Temperatura: " + data.current.temp_c + "°C";
+          document.getElementById("wiatr").innerHTML = "Prędkość wiatru: " + data.current.wind_kph + "km/h";
           document.getElementById("text").innerHTML = "Niebo:" + data.current.condition.text;
-          //debugger;
-          var wynik3 = document.getElementById("wynik3");
-          wynik3.src = "https:" + data.current.condition.icon;
+          document.getElementById("ikona").style.display = "inline-block";
+          document.getElementById("ikona").src = "https:" + data.current.condition.icon;          
         })
         .catch(error => {
-          document.getElementById("wynik1").innerHTML="Błąd" + error;
+          wyswietlBlad("Błąd: " + error);
         });
     }
+
+function wyswietlBlad(tekstBledu){
+  document.getElementById("blad").innerHTML=tekstBledu;
+  document.getElementById("temp").innerHTML = "";
+  document.getElementById("wiatr").innerHTML = "";
+  document.getElementById("text").innerHTML = ""; 
+  document.getElementById("ikona").style.display = "none";
+}
